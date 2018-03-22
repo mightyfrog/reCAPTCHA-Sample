@@ -42,7 +42,6 @@ class MainActivity : AppCompatActivity() {
         fab.setOnClickListener {
             sendVerifyRequest()
         }
-
     }
 
     private fun sendVerifyRequest() {
@@ -67,19 +66,19 @@ class MainActivity : AppCompatActivity() {
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
-        retrofit.create(reCAPTCHAApi::class.java).veify(secretKey, token)
+        retrofit.create(reCAPTCHAApi::class.java).verify(secretKey, token)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : SingleSubscriber<JsonObject>() {
                     override fun onSuccess(t: JsonObject?) {
                         t?.apply {
-                            textView.text = t.toString()
+                            textView.text = toString()
                         }
                     }
 
                     override fun onError(error: Throwable?) {
                         error?.apply {
-                            textView.text = error.toString()
+                            textView.text = toString()
                         }
                     }
                 })
@@ -88,6 +87,6 @@ class MainActivity : AppCompatActivity() {
     internal interface reCAPTCHAApi {
         @FormUrlEncoded
         @POST("recaptcha/api/siteverify")
-        fun veify(@Field("secret") secret: String, @Field("response") response: String): Single<JsonObject>
+        fun verify(@Field("secret") secret: String, @Field("response") response: String): Single<JsonObject>
     }
 }
