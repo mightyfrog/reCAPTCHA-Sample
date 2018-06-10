@@ -66,7 +66,7 @@ class MainActivity : AppCompatActivity() {
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
-        retrofit.create(reCAPTCHAApi::class.java).verify(secretKey, token)
+        retrofit.create(ReCAPTCHAApi::class.java).verify(secretKey, token)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : SingleSubscriber<JsonObject>() {
@@ -84,7 +84,7 @@ class MainActivity : AppCompatActivity() {
                 })
     }
 
-    internal interface reCAPTCHAApi {
+    internal interface ReCAPTCHAApi {
         @FormUrlEncoded
         @POST("recaptcha/api/siteverify")
         fun verify(@Field("secret") secret: String, @Field("response") response: String): Single<JsonObject>
